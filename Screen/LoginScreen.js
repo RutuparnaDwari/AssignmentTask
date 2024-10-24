@@ -70,6 +70,8 @@ const LoginScreen = () => {
     if (isFormValid) {
       console.log('Sign In:', { email, password });
       navigation.navigate('WelcomePage');
+      setEmail('');
+      setPassword('');
     } else {
       console.log('Form is invalid');
     }
@@ -82,6 +84,9 @@ const LoginScreen = () => {
     if (isFormValid) {
       console.log("Signing up with:", { email, password, institute });
       navigation.navigate('WelcomePage')
+      setEmail('');
+      setPassword('');
+      setInstitute('');
     } else {
       console.log('Sign Up form is invalid');
     }
@@ -123,12 +128,23 @@ const handleGithubLogin = ()=>{
   })
 }
 
+ //Linkedin Login
+ const handleLinkedinLogin = () => {
+  const linkedinLoginUrl = "https://www.linkedin.com/login";
+  Linking.openURL(linkedinLoginUrl).catch((err) => {
+    console.error("Failed to open URL:", err);
+    Alert.alert("Error", "Unable to open Linkedin Sign-In.");
+  })
+}
+
 
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Please Login To Continue</Text>
-
+     {isSignInTab ?
+        <Text style={styles.title}>Please Login To Continue</Text> :
+        <Text style={styles.title}>Signup</Text>
+      }
       {/* Sign In / Sign Up Tabs */}
       <View style={styles.tabContainer}>
         <Pressable
@@ -249,7 +265,7 @@ const handleGithubLogin = ()=>{
           </Pressable>
         </View>
         <View style={styles.socialButtonWrapper}>
-          <Pressable style={[styles.socialButton, styles.linkedinButton]}>
+          <Pressable style={[styles.socialButton, styles.linkedinButton]} onPress={handleLinkedinLogin}>
             <View style={styles.leftSection}>
               <FontAwesome name="linkedin" size={24} color="white" />
               <View style={styles.verticalDivider} />
